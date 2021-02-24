@@ -1,11 +1,11 @@
-package SkillSetExchange.service.impl;
+package SkillSetExchange.services.impl;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 
 import SkillSetExchange.model.UserInfoDAO;
-import SkillSetExchange.service.LoginVaildService;
+import SkillSetExchange.services.LoginVaildService;
 
 
 

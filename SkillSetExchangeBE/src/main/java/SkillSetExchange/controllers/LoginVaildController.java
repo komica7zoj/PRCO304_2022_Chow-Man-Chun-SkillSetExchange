@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import SkillSetExchange.model.UserInfoDAO;
-import SkillSetExchange.service.LoginVaildService;
+import SkillSetExchange.services.LoginVaildService;
 
 @RestController
 @RequestMapping(path = "/skillsetexchange")

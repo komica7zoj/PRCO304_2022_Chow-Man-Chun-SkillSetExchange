@@ -1,4 +1,4 @@
-package SkillSetExchange.service;
+package SkillSetExchange.services;
 
 import SkillSetExchange.model.UserInfoDAO;
 
