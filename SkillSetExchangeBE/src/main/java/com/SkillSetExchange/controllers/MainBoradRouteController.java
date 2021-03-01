@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.SkillSetExchange.jwt.JwtUtils;
+import com.SkillSetExchange.repository.MultichainRepository;
 import com.SkillSetExchange.services.impl.UserDetailsServiceImpl;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -25,6 +26,9 @@ public class MainBoradRouteController {
 	  @Autowired
 	  private UserDetailsServiceImpl userDetailsService;
 	
+	  @Autowired
+	  private MultichainRepository multichainRepository;
+	  
 	@GetMapping("/user")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public String userAccess(HttpServletRequest request) {
@@ -32,7 +36,7 @@ public class MainBoradRouteController {
 	        String username = jwtUtils.getUserNameFromJwtToken(headerAuth.substring(7, headerAuth.length()));
 	        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 	      
-		return "User Content. :"+userDetails.getUsername();
+		return "User Content. :"+userDetails.getUsername() + ":{"+multichainRepository.getUserMultichainContent(username).toString()+"}";
 	}
 
 	@GetMapping("/mod")
