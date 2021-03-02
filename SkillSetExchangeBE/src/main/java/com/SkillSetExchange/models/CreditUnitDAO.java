@@ -1,5 +1,10 @@
 package com.SkillSetExchange.models;
 
-public class CreditUnitDAO {
+import java.math.BigDecimal;
 
+import lombok.Data;
+@Data
+public class CreditUnitDAO {
+	public BigDecimal balances;
+	public String assetName;
 }

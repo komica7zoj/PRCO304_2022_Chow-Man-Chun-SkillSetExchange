@@ -12,8 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.SkillSetExchange.jwt.JwtUtils;
+import com.SkillSetExchange.models.CreditUnitDAO;
+import com.SkillSetExchange.models.UserMultichainContent;
 import com.SkillSetExchange.repository.MultichainRepository;
+import com.SkillSetExchange.services.MultiChainService;
 import com.SkillSetExchange.services.impl.UserDetailsServiceImpl;
+
+import wf.bitcoin.javabitcoindrpcclient.BitcoinJSONRPCClient;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -29,14 +34,19 @@ public class MainBoradRouteController {
 	  @Autowired
 	  private MultichainRepository multichainRepository;
 	  
+	  @Autowired
+	  private MultiChainService multiChainService;
+	  
 	@GetMapping("/user")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public String userAccess(HttpServletRequest request) {
 		String headerAuth = request.getHeader("Authorization");
 	        String username = jwtUtils.getUserNameFromJwtToken(headerAuth.substring(7, headerAuth.length()));
 	        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-	      
-		return "User Content. :"+userDetails.getUsername() + ":{"+multichainRepository.getUserMultichainContent(username).toString()+"}";
+	        UserMultichainContent userMultichainContent = multichainRepository.getUserMultichainContent(username);
+	        multiChainService.createConnection(userMultichainContent);
+	        CreditUnitDAO creditUnitDAO = multiChainService.getAssetBalances();
+	        return "User Content. :"+userDetails.getUsername() +",  ["+ creditUnitDAO.assetName+ "] have balances: {"+creditUnitDAO.balances+"}";
 	}
 
 	@GetMapping("/mod")
