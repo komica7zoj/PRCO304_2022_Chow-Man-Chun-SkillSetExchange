@@ -12,7 +12,7 @@ public interface MultiChainService {
 
 	public void createConnection(UserMultichainContent userMultichainContent);
 
-	public void sendasset(CreditUnitDAO creditUnitDAO, UserMultichainContent userMultichainContent);
+	public String sendasset(CreditUnitDAO creditUnitDAO, UserMultichainContent userMultichainContent);
 	public CreditUnitDAO getAssetBalances();
 	public List<CertificateDAO> listCertificate();
 	

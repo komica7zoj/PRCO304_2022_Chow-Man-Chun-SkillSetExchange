@@ -22,9 +22,10 @@ import wf.bitcoin.javabitcoindrpcclient.BitcoinJSONRPCClient;
 public class MultiChainServiceImpl implements MultiChainService {
 	BitcoinJSONRPCClient bitcoinClient;
 	@Override
-	public void sendasset(CreditUnitDAO creditUnitDAO, UserMultichainContent userMultichainContent) {
+	public String sendasset(CreditUnitDAO creditUnitDAO, UserMultichainContent userMultichainContent) {
 		// TODO Auto-generated method stub
-
+		List<LinkedHashMap>  result = (List<LinkedHashMap>)bitcoinClient.query("sendassettoaddress", userMultichainContent.multichainAddress,creditUnitDAO.assetName,creditUnitDAO.balances);
+return result.get(0).get("").toString();
 	}
 
 	@Override
