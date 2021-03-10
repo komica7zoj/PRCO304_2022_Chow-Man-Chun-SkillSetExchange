@@ -1,5 +1,6 @@
 module.exports = {
   devServer: {
+	  port: 8080,
 	proxy: {
       '^/api': {
         //target: 'http://42.3.28.133:8081',
@@ -8,8 +9,8 @@ module.exports = {
         changeOrigin: true,
 		secure:false,
     pathRewrite: {'^/api': '/api'},
-    logLevel: 'debug' 
+    logLevel: 'debug' ,
       },
-  }
+  },
 }
 };

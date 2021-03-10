@@ -11,6 +11,9 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/js/all.js';
 import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
+import vueMultiSelect from 'vue-multi-select';
+import 'vue-multi-select/dist/lib/vue-multi-select.css';
+
 import {
   faHome,
   faUser,
@@ -24,6 +27,7 @@ library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt);
 Vue.config.productionTip = false;
 Vue.use(VueSidebarMenu);
 Vue.use(VeeValidate);
+Vue.use(vueMultiSelect);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 new Vue({

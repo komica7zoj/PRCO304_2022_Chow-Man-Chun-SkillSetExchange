@@ -49,6 +49,12 @@ export const router = new Router({
       name: 'user',
       // lazy-loaded
       component: () => import('./views/BoardUser.vue')
+    },
+    {
+      path: '/searchSkillSet',
+      name: 'searchSkillSet',
+      // lazy-loaded
+      component: () => import('./views/SearchSkillSet.vue')
     }
   ]
 });

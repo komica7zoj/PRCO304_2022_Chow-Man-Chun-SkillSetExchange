@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.SkillSetExchange.jwt.JwtUtils;
-import com.SkillSetExchange.models.CreditUnitDAO;
 import com.SkillSetExchange.models.UserMultichainContent;
+import com.SkillSetExchange.models.DAO.CreditUnitDAO;
 import com.SkillSetExchange.repository.MultichainRepository;
 import com.SkillSetExchange.services.MultiChainService;
 import com.SkillSetExchange.services.impl.UserDetailsServiceImpl;

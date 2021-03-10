@@ -73,22 +73,32 @@ data() {
         {
           href: "/",
           title: "home",
-          icon: "fa fa-download"
+          icon: "fa fa-home"
         },
         {
           href: "/profile",
           title: "Profile",
-          icon: "fa fa-code"
+          icon: "fa fa-user-md"
         },
-        {
+		{
           href: "/user",
           title: "User",
+          icon: "fa fa-users"
+		},
+				{
+          href: "/searchSkillSet",
+          title: "Search the skill set",
+          icon: "fa fa-search"
+		},
+        {
+          href: "/searchSkillSet",
+          title: "Search the skill set",
           icon: "fa fa-list-ul",
           child: [
             {
               href: "/page/sub-page-1",
               title: "Sub Page 01",
-              icon: "fa fa-file-alt"
+              icon: "fa fa-users"
             },
             {
               href: "/page/sub-page-2",

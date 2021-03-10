@@ -29,6 +29,10 @@ public class UserMultichainContent {
 	@Size(max = 38)
 	public String multichainAddress;
 	
+	@Column(name="node_address")
+	@Size(max = 253)
+	public String nodeAddress;
+	
 	@Column(name="rpc_password")
 	@Size(max = 44)
 	public String rpcPassword;

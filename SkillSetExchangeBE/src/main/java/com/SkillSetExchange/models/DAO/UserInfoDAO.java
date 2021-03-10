@@ -1,4 +1,4 @@
-package com.SkillSetExchange.models;
+package com.SkillSetExchange.models.DAO;
 
 import org.springframework.stereotype.Component;
 

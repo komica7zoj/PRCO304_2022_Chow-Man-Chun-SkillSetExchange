@@ -7,12 +7,13 @@ import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
-import com.SkillSetExchange.models.CertificateDAO;
-import com.SkillSetExchange.models.CreditUnitDAO;
 import com.SkillSetExchange.models.User;
 import com.SkillSetExchange.models.UserMultichainContent;
+import com.SkillSetExchange.models.DAO.CertificateDAO;
+import com.SkillSetExchange.models.DAO.CreditUnitDAO;
 import com.SkillSetExchange.services.MultiChainService;
 
 import wf.bitcoin.javabitcoindrpcclient.BitcoinJSONRPCClient;
@@ -22,10 +23,10 @@ import wf.bitcoin.javabitcoindrpcclient.BitcoinJSONRPCClient;
 public class MultiChainServiceImpl implements MultiChainService {
 	BitcoinJSONRPCClient bitcoinClient;
 	@Override
-	public String sendasset(CreditUnitDAO creditUnitDAO, UserMultichainContent userMultichainContent) {
+	public String sendasset(CreditUnitDAO creditUnitDAO, UserMultichainContent userMultichainContent,String metaData) {
 		// TODO Auto-generated method stub
-		List<LinkedHashMap>  result = (List<LinkedHashMap>)bitcoinClient.query("sendassettoaddress", userMultichainContent.multichainAddress,creditUnitDAO.assetName,creditUnitDAO.balances);
-return result.get(0).get("").toString();
+		List<LinkedHashMap>  result = (List<LinkedHashMap>)bitcoinClient.query("sendwithmetadata ",userMultichainContent.multichainAddress, "'"+new JSONObject ().put(creditUnitDAO.assetName, creditUnitDAO.balances )+"'",metaData);
+return result.get(0).get(0).toString();
 	}
 
 	@Override
@@ -51,7 +52,7 @@ return result.get(0).get("").toString();
 		
 		String user = userMultichainContent.username;
 		String password = userMultichainContent.rpcPassword;
-		String host = "127.0.0.1";
+		String host = userMultichainContent.nodeAddress;
 		int port = userMultichainContent.connectionPort;
 
 		try {
