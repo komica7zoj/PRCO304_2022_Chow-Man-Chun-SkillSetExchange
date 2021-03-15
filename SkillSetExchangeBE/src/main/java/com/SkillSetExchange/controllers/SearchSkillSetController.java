@@ -51,14 +51,14 @@ public class SearchSkillSetController {
 	  @Autowired
 	  SearchSkillSetService searchSkillSetService;
 	  
-		@PostMapping("/getTackleList")
+		@PostMapping("/getSkillSetList")
 		@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 		public SearchConditionDAO GetTackleList(@RequestBody Map<String, Object> dao) throws IOException {
 			ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature .USE_LONG_FOR_INTS, true);;
 			SearchConditionDAO	searchConditionDAO =  objectMapper.convertValue(dao.get("searchConditionDAO"), SearchConditionDAO.class);
 			if(! searchConditionDAO.skillSetCategory.isEmpty())
 			{
-				return searchSkillSetService.findAllMatchTackle(searchConditionDAO);	
+				return searchSkillSetService.findSkillSet(searchConditionDAO);	
 			}
 			return null;
 			}
@@ -82,7 +82,7 @@ public class SearchSkillSetController {
 
 		  
 		
-	        return searchSkillSetService.getAllSkillSetTpe();
+	        return searchSkillSetService.getAllSkillSetType();
 	}
 	
 }

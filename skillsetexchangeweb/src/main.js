@@ -13,6 +13,8 @@ import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import vueMultiSelect from 'vue-multi-select';
 import 'vue-multi-select/dist/lib/vue-multi-select.css';
+import { TableComponent, TableColumn } from 'vue-table-component'; 
+
 
 import {
   faHome,
@@ -28,6 +30,9 @@ Vue.config.productionTip = false;
 Vue.use(VueSidebarMenu);
 Vue.use(VeeValidate);
 Vue.use(vueMultiSelect);
+Vue.use(TableComponent);
+Vue.component('table-component', TableComponent);
+Vue.component('table-column', TableColumn);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 new Vue({

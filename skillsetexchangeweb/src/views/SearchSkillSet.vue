@@ -64,10 +64,35 @@ historyButton
 
     </header>
  <a class="btn btn-danger"  @click.prevent="onSearch"> Search </a>
+ 
+
+<div>
+<TableView
+      :headers="columns"
+      :rows="items"      
+      :sort="sort1"
+      :pagination="pagination"
+      css-style="custom-style"      
+    >
+      <template v-slot:items="{ row }">
+        <td>{{ row.skillSetName }}</td>
+        <td>{{ row.skillCategoryName }}</td>   
+        <td>{{ row.skillSetDescript }}</td>              
+        <td>{{ row.academicLevel }}</td>     
+        <td>{{ row.tag }}</td>                 
+        <td>{{ row.username }}</td>  
+      </template>
+      
+      <template v-slot:no-data>
+        <span>No data</span>
+      </template>
+    </TableView>
+
+    <div class="separator">---&#10043;---</div>
+    <Footer></Footer>
+</div>
   </div>
-  
-
-
+ 
  
 
 
@@ -77,13 +102,36 @@ historyButton
 import SearchSkillSetService from '../services/searchSkillSet.service';
 import vueMultiSelect from 'vue-multi-select';
 import 'vue-multi-select/dist/lib/vue-multi-select.css';
+import Footer from '../components/Footer.vue'
+import TableView from '../components/TableView.vue'
+
 export default {
   name: 'SearchSkillSet',
+  computed: {
+        totalSongs () {
+            return this.tableData.reduce(function(sum, value ) {
+                return sum + value.songs;
+            }, 0);
+        }
+    },
   components: {
-   vueMultiSelect,
+   vueMultiSelect ,TableView, Footer
   },
   data() {
     return {
+		columns: [
+{"label":"Name","field":"skillSetName","sortable":true,"type":"String"},
+{"label":"skillCategoryName","field":"skillCategoryName","sortable":true,"type":"String"},
+{"label":"skillSetDescript","field":"skillSetDescript","sortable":true,"type":"String"},
+{"label":"academicLevel","field":"academicLevel","sortable":true,"type":"Number"},
+{"label":"tag","field":"tag","sortable":true,"type":"String"},
+{"label":"username","field":"username","sortable":true,"type":"String"},
+],
+      items: [{"id":0,"skillSetName":"Isidor","skillCategoryName":"Gatenby","skillSetDescript":"igatenby0@stanford.edu","academicLevel":20,"tag":"El Salvador","username":"A2"}],  
+      sort1:{
+        field: 'first_name',
+        order: 'asc'
+      },
         skillSetTypebtnLabel: skillSetTypeDAO => `Chose (${skillSetTypeDAO.length})`  ,
         skillSetategorybtnLabel: skillSetTypeDAO => `Chose (${skillSetTypeDAO.length})`  ,
         content: '',
@@ -117,6 +165,11 @@ export default {
         labelList: 'skillSetCategory',
 		groupName: 'name'
       },
+  pagination:{
+        itemsPerPage: 7,
+        align: 'center',
+        visualStyle: 'select'
+      }
     };
   },
   mounted() {
@@ -136,7 +189,21 @@ export default {
     );
   },
   methods: {
-     onSearch : function (){	 
+    onSearch : function (){	 
+    let dao ={skillSetType:this.skillSetTypeDAO,skillSetCategory: this.skillSetCategoryDAO,tackleName: []}
+    SearchSkillSetService.getSkillSetInfoMatchResult(dao).then(
+    response => {
+      
+        this.items = response.data.skillSetSearchResultDAO
+		console.log(this.items);
+    },
+    error => {
+       this.content =
+         (error.response && error.response.data) ||
+         error.message ||
+         error.toString();
+     }
+     );
      },
   add(event) {
       event.target.className += ' disabled'
@@ -157,7 +224,7 @@ console.log(skillSetTypeDropDownList);
 
 		console.log(this.skillSetCategoryDropDownListEnable);
       this.skillSetCategoryDAO = [];
-      console.log(this.searchConditionDAO);
+    
      },
       error => {
         this.content =
@@ -174,3 +241,94 @@ console.log(skillSetTypeDropDownList);
 };
 </script>
 
+<style lang="scss">
+@import url(https://fonts.googleapis.com/css?family=Roboto+Mono);
+body, html{
+  height: 100%;
+}
+#app {
+  font-family: 'Roboto Mono', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  width: 90%;
+  margin: 0 auto;
+}
+h1{
+  margin-bottom: 2em;
+  color: #f90;
+}
+.separator{
+  margin: 2em 0;
+  text-align: center;
+}
+.custom-style {
+  // Table styles
+  .ozn-table {
+    border-collapse: collapse;
+    width: 100%;
+    thead {
+      th { 
+        border-bottom: 1px solid #ffffff;
+        padding: 0 10px;
+        height: 48px;
+        text-align: left; 
+        font-size: 1em; 
+        color: #fff;
+        background-color: #7cc3fd; 
+        cursor: pointer; 
+        &:hover{
+          span{
+            text-decoration: underline;
+            text-decoration-style: dotted;
+          }
+        }        
+        i{
+          color: #ffffff; 
+          &.active{
+            color: #ff00aa;
+            + span{
+              color: #a9237c;
+            }
+          }
+        }       
+      }
+    }
+    tbody {
+      tr{
+        &:nth-child(odd){
+          background-color: #e9f5ff;
+        }
+        &:nth-child(even){
+          background-color: #fafaeb;
+        }
+      }
+      td {
+        border-bottom: 1px solid #ffffff;
+        padding: 0 10px;
+        height: 48px;
+        font-size: 1em; 
+      }
+    }
+  }
+  // Paginator styles    
+  .ozn-paginator{
+    margin-top: .5em;
+    select{
+      border: 1px solid #7cc3fd;
+      border-radius: 8px;
+      color: #ffffff;
+      background-color:  #7cc3fd;
+      outline: none;
+    }
+    button{
+      border: 1px solid #7cc3fd;
+      border-radius: 8px;
+      color: #ffffff;
+      background-color:  #7cc3fd;
+      outline: none;
+    }    
+  }
+}
+</style>
