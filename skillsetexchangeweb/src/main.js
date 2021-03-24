@@ -1,9 +1,11 @@
 import Vue from 'vue';
 import App from './App.vue';
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import { router } from './router';
 import store from './store';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.css'
 import VeeValidate from 'vee-validate';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -30,6 +32,8 @@ Vue.config.productionTip = false;
 Vue.use(VueSidebarMenu);
 Vue.use(VeeValidate);
 Vue.use(vueMultiSelect);
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
 Vue.use(TableComponent);
 Vue.component('table-component', TableComponent);
 Vue.component('table-column', TableColumn);

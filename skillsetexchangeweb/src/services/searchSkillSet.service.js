@@ -13,6 +13,10 @@ class SearchSkillSetService {
   return axios.post( API_URL + 'getSkillSetList',{searchConditionDAO},{headers: authHeader()});
   } 
   
+    viewSkillSet(id) {
+  return axios.post( API_URL + 'viewskillset',{infoId:id},{headers: authHeader()});
+  } 
+  
   getSkillSetPool() {
     return axios.get(API_URL + 'getskillsetpool', { headers: authHeader() });
   }
