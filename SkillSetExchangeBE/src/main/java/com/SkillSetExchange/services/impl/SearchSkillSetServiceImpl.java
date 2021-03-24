@@ -64,4 +64,14 @@ public class SearchSkillSetServiceImpl implements SearchSkillSetService {
 		}};
 	}
 
+	@Override
+	public SearchConditionDAO getSkillSetByid(Long id) {
+		// TODO Auto-generated method stub
+		return new SearchConditionDAO(){{
+			skillSetSearchResultDAO = skillSetInfoRepository.getSkillSetInfoDAOByInfoId(id);
+			skillSetInfo = skillSetInfoRepository.getSkillSetInfoById(id);
+		}};
+		
+	}
+
 }

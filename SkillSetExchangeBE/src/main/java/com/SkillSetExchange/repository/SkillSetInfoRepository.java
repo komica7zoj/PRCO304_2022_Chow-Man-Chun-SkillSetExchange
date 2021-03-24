@@ -23,12 +23,25 @@ public interface SkillSetInfoRepository extends CrudRepository<SkillSetInfo,Long
 	    List<SkillSetInfo> getSkillSetInfo(@Param("id") List<Long> id);  
 	   
 	   @Transactional
+	    @Query(value ="select * from skill_set_info where id in ( :id )", 
+	    		  nativeQuery = true)
+	    List<SkillSetInfo> getSkillSetInfoById(@Param("id") Long id); 
+	   
+	   @Transactional
 	    @Query(value ="select s.id as id, s.skill_set_name as skillSetName,s.skill_set_descript as  skillSetDescript,s.username as username ,s.academic_level as academicLevel,s.tag as tag,c.category_name as skillCategoryName "
 	    		+ "from skill_set_info s "
 	    		+ ", skill_set_category c "
 	    		+ "where s.skill_set_category_id in ( :id ) and c.id = s.skill_set_category_id ", 
 	    		  nativeQuery = true)
 	    List<SkillSetSearchResultDAO> getSkillSetInfoDAO(@Param("id") List<Long> id); 
+	   
+	   @Transactional
+	    @Query(value ="select s.id as id, s.skill_set_name as skillSetName,s.skill_set_descript as  skillSetDescript,s.username as username ,s.academic_level as academicLevel,s.tag as tag,c.category_name as skillCategoryName "
+	    		+ "from skill_set_info s "
+	    		+ ", skill_set_category c "
+	    		+ "where s.id in ( :id ) and c.id = s.skill_set_category_id ", 
+	    		  nativeQuery = true)
+	    List<SkillSetSearchResultDAO> getSkillSetInfoDAOByInfoId(@Param("id") Long id); 
 	   
 	   @Transactional
 	    @Query(value ="select * from skill_set_info where username =:username ", 

@@ -24,7 +24,7 @@ public class SkillSetInfo {
 	public String username;
 	
 	@Column(name="skill_set_category_id")
-	public Long skillCategoryId;
+	public Long skillSetCategoryId;
 	
 	@Column(name="skill_set_name")
 	@Size(max = 100)

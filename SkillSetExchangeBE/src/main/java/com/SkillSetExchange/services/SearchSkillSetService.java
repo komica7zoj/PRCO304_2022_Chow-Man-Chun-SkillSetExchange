@@ -7,4 +7,5 @@ public interface SearchSkillSetService {
 	SearchConditionDAO getAllSkillSetType();
 	SearchConditionDAO getSkillSetCategory(SearchConditionDAO searchConditionDAO );
 	SearchConditionDAO findAllMatchTackle(SearchConditionDAO searchConditionDAO );
+	SearchConditionDAO getSkillSetByid(Long id);
 }

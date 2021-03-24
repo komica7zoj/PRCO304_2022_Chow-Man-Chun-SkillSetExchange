@@ -18,7 +18,7 @@ public class SearchConditionDAO {
 	public String name;
 	public List<SkillSetType> skillSetType;
 	public List<SkillSetCategory> skillSetCategory;
-	public List<TackleInfo> tackleName;
+	public List<TackleInfo> tackleInfo;
 	public List<SkillSetInfo> skillSetInfo;
 public List<SkillSetSearchResultDAO> skillSetSearchResultDAO;
 }

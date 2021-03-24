@@ -52,7 +52,7 @@ search
 historyButton
 :disabled="skillSetCategoryDropDownListEnable"
 :options="skillSetCategoryoptions"
-:btnLabel="skillSetategorybtnLabel"
+:btnLabel="skillSetCategorybtnLabel"
 :selectOptions="skillSetCategoryDropDownList">
 <template v-slot:option="{option}">
 <input type="checkbox" :checked="option.selected"/>
@@ -75,7 +75,7 @@ historyButton
       css-style="custom-style"      
     >
       <template v-slot:items="{ row }">
-        <td>{{ row.skillSetName }}</td>
+        <td><router-link :to="{ name: 'skillSetView', params: { id: row.id }}">{{ row.skillSetName }}</router-link></td>
         <td>{{ row.skillCategoryName }}</td>   
         <td>{{ row.skillSetDescript }}</td>              
         <td>{{ row.academicLevel }}</td>     
@@ -127,13 +127,13 @@ export default {
 {"label":"tag","field":"tag","sortable":true,"type":"String"},
 {"label":"username","field":"username","sortable":true,"type":"String"},
 ],
-      items: [{"id":0,"skillSetName":"Isidor","skillCategoryName":"Gatenby","skillSetDescript":"igatenby0@stanford.edu","academicLevel":20,"tag":"El Salvador","username":"A2"}],  
+      items: [],  
       sort1:{
         field: 'first_name',
         order: 'asc'
       },
         skillSetTypebtnLabel: skillSetTypeDAO => `Chose (${skillSetTypeDAO.length})`  ,
-        skillSetategorybtnLabel: skillSetTypeDAO => `Chose (${skillSetTypeDAO.length})`  ,
+        skillSetCategorybtnLabel: skillSetCategoryDAO => `Chose (${skillSetCategoryDAO.length})`  ,
         content: '',
         skillSetCategoryDropDownListEnable: true,
         skillSetTypeDAO: [],
@@ -141,7 +141,7 @@ export default {
         searchConditionDAO: {
         skillSetType: [],
         skillSetCategory: [],
-        tackleName: []
+        tackleInfo: []
        },
       skillSetTypeDropDownList:[{
         name: 'Skill set type:',
@@ -161,7 +161,7 @@ export default {
        skillSetCategoryoptions: {
         multi: true,
         groups: true,
-		labelName: 'typeName',
+		labelName: 'categoryName',
         labelList: 'skillSetCategory',
 		groupName: 'name'
       },
@@ -190,12 +190,12 @@ export default {
   },
   methods: {
     onSearch : function (){	 
-    let dao ={skillSetType:this.skillSetTypeDAO,skillSetCategory: this.skillSetCategoryDAO,tackleName: []}
+    let dao ={skillSetType:this.skillSetTypeDAO,skillSetCategory: this.skillSetCategoryDAO,tackleInfo: []}
     SearchSkillSetService.getSkillSetInfoMatchResult(dao).then(
     response => {
       
         this.items = response.data.skillSetSearchResultDAO
-		console.log(this.items);
+
     },
     error => {
        this.content =
@@ -209,7 +209,7 @@ export default {
       event.target.className += ' disabled'
     },
 	onChangeSkillSetType() {
-let skillSetTypeDropDownList ={name:'testing',skillSetType:this.skillSetTypeDAO,skillSetCategory: [],tackleName: []}
+let skillSetTypeDropDownList ={name:'testing',skillSetType:this.skillSetTypeDAO,skillSetCategory: [],tackleInfo: []}
 console.log(skillSetTypeDropDownList);
 	SearchSkillSetService.getSkillSetFindResult(skillSetTypeDropDownList).then(
      response => {
@@ -233,7 +233,34 @@ console.log(skillSetTypeDropDownList);
           error.toString();
       }
     );
-	}
+	},
+	herfTo: function(idx){  
+
+      if (this.sortEnabled && this.headers[idx].sortable){
+       
+        if (this.sortColumn == idx){   
+          this.sortOrder = (this.sortOrder === 'asc') ? 'desc' : 'asc'
+          this.tableRows.reverse()
+        }
+        else{
+          this.sortColumn = idx
+          this.sortOrder = 'asc'
+          this.sortField = this.headers[idx].field  
+
+          if (this.headers[idx].type == 'Number'){
+            this.tableRows.sort((a, b) => a[this.sortField] - b[this.sortField])
+          }
+          else{
+            this.tableRows.sort((a, b) => a[this.sortField].localeCompare(b[this.sortField]))
+          }
+        }        
+
+        this.page= 1
+
+        this.selectVisibleRows()        
+      }
+      
+    }
 	
   },
   
