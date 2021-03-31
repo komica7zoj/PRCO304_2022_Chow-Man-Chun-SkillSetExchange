@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <header class="jumbotron">
-        <div v-bind:key="data.id" v-for="data in this.SearchConditionDAO.skillSetSearchResultDAO">
+<div id="app">
+  <div v-if="isTackleCreated === 1">1</div>
+  <div v-else-if="isTackleCreated === 0">0</div>
+  <div v-else> <div v-bind:key="data.id" v-for="data in this.SearchConditionDAO.skillSetSearchResultDAO">
   <b-card
     v-bind:title="data.skillSetName"
     img-src="https://picsum.photos/600/300/?image=25"
@@ -17,7 +20,7 @@
   <section>
   <div>
     <label v-bind:class="{ isActive: card===0}">
-      <input type="radio" v-model="card" value="0" checked/>
+      <input type="radio" v-model="card" v-bind:value="false" checked/>
     <vue-multi-select
       v-model="values"
       :btnLabel="btnLabel"
@@ -25,6 +28,7 @@
       historyButton
       :options="options"
       :selectOptions="list" 
+      :disabled="card"
       >
   
 <template v-slot:option="{option}">
@@ -38,14 +42,19 @@
      </div>
      <div>
     <label>
-      <input type="radio" v-model="card" value="3"/>
-      <span class="text">Card 3</span>
+      <input type="radio" v-model="card" v-bind:value="true"/>
+      <span class="text">Credit {{skillSetSearchResultDAO.academicLevel}}</span>
     </label>
 </div>
   </section>
-    <b-button @click.prevent="issueTackleClick" variant="primary">Go somewhere</b-button>
+  <input type="text" v-model="skillSetSearchResultDAO.tag"/>
+    <b-button @click.prevent="issueTackleClick" variant="primary" :disabled="card == false && values.length == 0">Make Tackle</b-button>
+	{{values.length}}
+	{{card}}
   </b-card>
+</div></div>
 </div>
+       
     </header>
   </div>
 </template>
@@ -60,29 +69,22 @@ export default {
   name: 'SkillSetView',
   data() {
     return {
-	card:'',
+	card:false,
     btnLabel: values =>`${values.length > 0 ? values[0].name : 'Select ...'}`,
     name: 'first group',
     values: [],
     options: {
         multi: false,
-		labelName: 'name'
+		labelName: 'name',
+		labelValue: 'id'
       },
-	list:[{ name: '0' },
-        { name: '2' },
-        { name: '3' },
-        { name: '8' },
-        { name: '9' },
-        { name: '11' },
-        { name: '13' },
-        { name: '14' },
-        { name: '15' },
-        { name: '18' }],
+	list:[],
       content: '',
       skillSetFlag:false,
       creditFlag:false,
       id: this.$route.params.id,
       SearchConditionDAO:{},
+      userSkillSetDAO:[],
       skillSetSearchResultDAO:{},
       tackleInfo:[{
         username:'',
@@ -90,7 +92,7 @@ export default {
 		tackleName:'',
 		tackleDescript:'',
 		tag:''}], 
-      isTackleCreated:false
+      isTackleCreated:null
     };
   },
     computed: {
@@ -106,15 +108,26 @@ export default {
 	console.log(this.SearchConditionDAO);
 	this.tackleInfo[0].skillSetCategoryId = this.SearchConditionDAO.skillSetInfo[0].skillSetCategoryId;
 	this.tackleInfo[0].tackleName = this.SearchConditionDAO.skillSetInfo[0].username;
+	this.tackleInfo[0].skillSetInfoId = this.SearchConditionDAO.skillSetInfo[0].id;
 	this.tackleInfo[0].username = this.currentUser.username;
 	this.tackleInfo[0].status = 'S';
+    if (this.card)
+	{
+	this.tackleInfo[0].statusType = 'C';
+	this.tackleInfo[0].tackleSkillSetInfoId=0;
+	}
+	else
+	{
+	this.tackleInfo[0].tackleSkillSetInfoId = this.values[0].id;
+	this.tackleInfo[0].statusType = 'S';
+	}
 	this.SearchConditionDAO.tackleInfo =this.tackleInfo;
     console.log(this.SearchConditionDAO);
     SkillSetViewService.issueTackle(this.SearchConditionDAO).then(
     response => {
       
         this.isTackleCreated = response.data
-
+console.log(this.isTackleCreated );
     },
     error => {
        this.content =
@@ -127,12 +140,18 @@ export default {
        },
   mounted() {
 
-    SkillSetViewService.viewSkillSet(this.id).then(
+    SkillSetViewService.viewSkillSet(this.id, this.currentUser.username).then(
       response => {
         this.content = response.data;
            console.log(this.content);
            this.SearchConditionDAO = response.data;
           this.skillSetSearchResultDAO = this.SearchConditionDAO.skillSetSearchResultDAO[0];
+          this.userSkillSetDAO = this.SearchConditionDAO.userSkillSetDAO;
+          this.userSkillSetDAO.forEach((value, index) => {
+    this.list.push({name:value.skillSetName, id:value.id});
+    console.log(value);
+    console.log(index);
+});
       },
       error => {
         this.content =

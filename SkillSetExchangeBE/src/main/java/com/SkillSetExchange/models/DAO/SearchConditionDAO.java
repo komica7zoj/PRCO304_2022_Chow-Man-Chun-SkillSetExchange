@@ -21,4 +21,5 @@ public class SearchConditionDAO {
 	public List<TackleInfo> tackleInfo;
 	public List<SkillSetInfo> skillSetInfo;
 public List<SkillSetSearchResultDAO> skillSetSearchResultDAO;
+public List<SkillSetSearchResultDAO> userSkillSetDAO;
 }

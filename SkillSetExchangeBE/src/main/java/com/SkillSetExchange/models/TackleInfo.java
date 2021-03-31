@@ -14,6 +14,8 @@ import javax.print.attribute.standard.DateTimeAtCompleted;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.springframework.lang.Nullable;
+
 import lombok.Data;
 
 
@@ -39,6 +41,13 @@ public class TackleInfo {
 	@Column(name="skill_set_category_id")
 	public Long skillSetCategoryId;
 	
+	@Column(name="skill_set_info_id")
+	public Long skillSetInfoId;
+	
+	
+	@Column(name="tackle_skill_set_info_id",  nullable = true )
+	public Long tackleSkillSetInfoId;
+	
 	@Column(name="tackle_name")
 	@Size(max = 100)
 	public String tackleName;
@@ -60,6 +69,9 @@ public class TackleInfo {
 	@Size(max = 1)
 	public String status;
 	
+	@Column(name="status_type")
+	@Size(max = 1)
+	public String statusType;
 	@Column(name="tag")
 	@Size(max = 100)
 	public String tag;

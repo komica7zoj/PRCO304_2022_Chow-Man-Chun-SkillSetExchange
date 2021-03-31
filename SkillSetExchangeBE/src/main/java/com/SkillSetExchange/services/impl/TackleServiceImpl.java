@@ -14,16 +14,27 @@ public class TackleServiceImpl implements TackleService {
 	@Autowired
 	TackleRepository tackleRepository;
 	
-	@Override
-	public TackleInfoDAO getTackleInfo(SearchConditionDAO searchConditionDAO) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	
 	@Override
 	public  int newTackleIssue(TackleInfo tackleInfo) {
 		// TODO Auto-generated method stub
-		return tackleRepository.newTackle(tackleInfo);
+		
+			return tackleRepository.newTackle(tackleInfo);
+	}
+
+
+	@Override
+	public TackleInfoDAO getTackleInfoByUsername(String username) {
+		// TODO Auto-generated method stub
+		return new TackleInfoDAO() {{tackleRepository.getTackleByUsername(username);}};
+	}
+
+
+	@Override
+	public TackleInfoDAO getTackleInfoByTackleName(String tackleName) {
+		// TODO Auto-generated method stub
+		return new TackleInfoDAO() {{tackleRepository.getTackleByTacklename(tackleName);}};
+
 	}
 }

@@ -9,8 +9,8 @@ class SkillSetViewService {
   return axios.post( API_URL + 'createTackle',{dao},{headers: authHeader()});
   }
   
-  viewSkillSet(id) {
-  return axios.post( API_URL + 'viewskillset',{infoId:id},{headers: authHeader()});
+  viewSkillSet(id, username) {
+  return axios.post( API_URL + 'viewskillset',{infoId:id, username: username},{headers: authHeader()});
   } 
   
 

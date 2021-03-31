@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.SkillSetExchange.jwt.JwtUtils;
+import com.SkillSetExchange.models.SkillSetInfo;
 import com.SkillSetExchange.models.TackleInfo;
 import com.SkillSetExchange.models.DAO.SearchConditionDAO;
+import com.SkillSetExchange.models.DAO.TackleInfoDAO;
 import com.SkillSetExchange.repository.MultichainRepository;
 import com.SkillSetExchange.services.MultiChainService;
 import com.SkillSetExchange.services.SearchSkillSetService;
@@ -61,10 +63,22 @@ public class TackleController {
       }
 	@PostMapping("/viewskillset")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public SearchConditionDAO ViewSkillSet(@RequestBody Map<String, Long> infoId) {
+	public SearchConditionDAO ViewSkillSet(@RequestBody Map<String, Object> infoId) {
 
 		SearchConditionDAO	searchConditionDAO =  new SearchConditionDAO();
-		searchConditionDAO.skillSetInfo = searchSkillSetService.getSkillSetByid(infoId.get("infoId")).skillSetInfo;
-	        return searchSkillSetService.getSkillSetByid(infoId.get("infoId"));
+		searchConditionDAO = searchSkillSetService.getSkillSetByid(((Number)infoId.get("infoId")).longValue());
+		searchConditionDAO.userSkillSetDAO = searchSkillSetService.getSkillSetByName((String)infoId.get("username")).skillSetSearchResultDAO;
+	        return searchConditionDAO;
 	}
+
+	@PostMapping("/viewTackle")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+	public TackleInfoDAO viewTackleFrom(@RequestBody Map<String, Object> username) {
+
+		TackleInfoDAO	tackleInfoDAO =  new TackleInfoDAO();
+		tackleInfoDAO.tackleInfoByTacklename = tackleService.getTackleInfoByUsername(username.get("username").toString()).tackleInfoByTacklename;
+		tackleInfoDAO.tackleInfoByusername = tackleService.getTackleInfoByTackleName(username.get("username").toString()).tackleInfoByusername;
+	        return tackleInfoDAO;
+	}
+	
 }

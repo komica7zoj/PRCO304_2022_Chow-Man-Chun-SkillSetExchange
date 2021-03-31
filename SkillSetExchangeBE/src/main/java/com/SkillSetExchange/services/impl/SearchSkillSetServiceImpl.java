@@ -74,4 +74,12 @@ public class SearchSkillSetServiceImpl implements SearchSkillSetService {
 		
 	}
 
+	@Override
+	public SearchConditionDAO getSkillSetByName(String username) {
+		// TODO Auto-generated method stub
+		return new SearchConditionDAO(){{
+				skillSetSearchResultDAO = skillSetInfoRepository.getSkillSetInfoDAOByUsername(username);
+	}};
+	}
+
 }
