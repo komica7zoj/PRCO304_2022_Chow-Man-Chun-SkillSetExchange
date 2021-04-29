@@ -3,13 +3,15 @@ package com.SkillSetExchange.services.impl;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
-
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import com.SkillSetExchange.BlockChainUtil;
 import com.SkillSetExchange.models.User;
 import com.SkillSetExchange.models.UserMultichainContent;
 import com.SkillSetExchange.models.DAO.CertificateDAO;
@@ -47,11 +49,11 @@ return result.get(0).get(0).toString();
 	}
 
 	@Override
-	public void createConnection(UserMultichainContent userMultichainContent) {
+	public void createConnection(UserMultichainContent userMultichainContent, String rpcPassword) {
 		// TODO Auto-generated method stub
 		
 		String user = userMultichainContent.username;
-		String password = userMultichainContent.rpcPassword;
+		String password =rpcPassword;
 		String host = userMultichainContent.nodeAddress;
 		int port = userMultichainContent.connectionPort;
 
@@ -65,6 +67,18 @@ return result.get(0).get(0).toString();
 		    e.printStackTrace();
 		}
 		
+	}
+
+	@Override
+	public Map<String, Object> getChainPassword() {
+		// TODO Auto-generated method stub
+		Map<String, Object> userinfoMap = new HashMap<String,Object>();
+		List<LinkedHashMap>  result = (List<LinkedHashMap>)bitcoinClient.query("liststreamitems","userinfo");
+		result.forEach(userinfo ->{
+			userinfoMap.put(userinfo.get("keys").toString(),((LinkedHashMap)((LinkedHashMap) userinfo.get("data")).get("json")).get("pw").toString()); 
+		});
+			
+		return userinfoMap;
 	}
 
 }

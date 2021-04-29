@@ -2,7 +2,9 @@
   <div class="container">
     <header class="jumbotron">
 <div id="app">
-  <div v-if="isTackleCreated === 1">1</div>
+  <div v-if="isTackleCreated === 1">
+  <router-link :to="{ name: 'offerTackle' }">Click here to preview your offer.</router-link>
+  </div>
   <div v-else-if="isTackleCreated === 0">0</div>
   <div v-else> <div v-bind:key="data.id" v-for="data in this.SearchConditionDAO.skillSetSearchResultDAO">
   <b-card

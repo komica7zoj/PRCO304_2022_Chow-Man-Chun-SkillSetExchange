@@ -1,5 +1,5 @@
 const address = 'http://localhost';
-//const address = 'http://localhost';
+//const address = 'http://42.3.72.199';
 
 
 const Main_API_URL = address + ':8080/api/main/';

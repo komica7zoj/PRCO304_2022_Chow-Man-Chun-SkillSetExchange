@@ -25,6 +25,10 @@ public class TransactionInfo {
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date createDate = new Date();
 	
+	@Column(name="updated_date")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date updateDate = new Date();
+	
 	@Column(name="transaction_hash")
 	@Size(max = 64)
 	public String transactionHash;

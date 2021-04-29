@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.SkillSetExchange.BlockChainUtil;
 import com.SkillSetExchange.jwt.JwtUtils;
 import com.SkillSetExchange.models.UserMultichainContent;
 import com.SkillSetExchange.models.DAO.CreditUnitDAO;
@@ -44,7 +45,8 @@ public class MainBoradRouteController {
 	        String username = jwtUtils.getUserNameFromJwtToken(headerAuth.substring(7, headerAuth.length()));
 	        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 	        UserMultichainContent userMultichainContent = multichainRepository.getUserMultichainContent(username);
-	        multiChainService.createConnection(userMultichainContent);
+	        String password =BlockChainUtil.chainPWMap.get("["+userMultichainContent.multichainAddress+"]").toString();
+	        multiChainService.createConnection(userMultichainContent,password);
 	        CreditUnitDAO creditUnitDAO = multiChainService.getAssetBalances();
 	        return "User Content. :"+userDetails.getUsername() +",  ["+ creditUnitDAO.assetName+ "] have balances: {"+creditUnitDAO.balances+"}";
 	}

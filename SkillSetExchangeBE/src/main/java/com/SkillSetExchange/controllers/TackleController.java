@@ -75,9 +75,9 @@ public class TackleController {
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public TackleInfoDAO viewTackleFrom(@RequestBody Map<String, Object> username) {
 
-		TackleInfoDAO	tackleInfoDAO =  new TackleInfoDAO();
-		tackleInfoDAO.tackleInfoByTacklename = tackleService.getTackleInfoByUsername(username.get("username").toString()).tackleInfoByTacklename;
-		tackleInfoDAO.tackleInfoByusername = tackleService.getTackleInfoByTackleName(username.get("username").toString()).tackleInfoByusername;
+		TackleInfoDAO	tackleInfoDAO =  new TackleInfoDAO() {{
+		tackleInfoByTacklename = tackleService.getTackleInfoByTackleName(username.get("username").toString());
+		tackleInfoByusername = tackleService.getTackleInfoByUsername(username.get("username").toString());}};
 	        return tackleInfoDAO;
 	}
 	

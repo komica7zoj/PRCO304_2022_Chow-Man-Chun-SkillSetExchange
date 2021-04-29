@@ -1,11 +1,12 @@
 package com.SkillSetExchange.services;
 
+import java.util.List;
+
 import com.SkillSetExchange.models.TackleInfo;
-import com.SkillSetExchange.models.DAO.SearchConditionDAO;
-import com.SkillSetExchange.models.DAO.TackleInfoDAO;
+import com.SkillSetExchange.repository.dao.TackleViewDAO;
 
 public interface TackleService {
-	TackleInfoDAO getTackleInfoByUsername(String username);
+	List<TackleViewDAO> getTackleInfoByUsername(String username);
 	int newTackleIssue(TackleInfo tackleInfo);
-	TackleInfoDAO getTackleInfoByTackleName(String tackleName);
+	List<TackleViewDAO> getTackleInfoByTackleName(String tackleName);
 }

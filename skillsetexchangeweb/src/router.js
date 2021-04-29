@@ -61,6 +61,12 @@ export const router = new Router({
       name: 'skillSetView',
       // lazy-loaded
       component: () => import('./views/SkillSetView.vue')
+    },
+    {
+      path: '/offerTackle',
+      name: 'offerTackle',
+      // lazy-loaded
+      component: () => import('./views/OfferTackle.vue')
     }
   ]
 });

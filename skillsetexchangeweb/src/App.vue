@@ -91,8 +91,8 @@ data() {
           icon: "fa fa-search"
 		},
         {
-          href: "/searchSkillSet",
-          title: "Search the skill set",
+          href: "/offerTackle",
+          title: "Preview your offer",
           icon: "fa fa-list-ul",
           child: [
             {
