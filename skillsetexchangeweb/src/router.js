@@ -67,6 +67,12 @@ export const router = new Router({
       name: 'offerTackle',
       // lazy-loaded
       component: () => import('./views/OfferTackle.vue')
+    },
+    {
+      path: '/agreement',
+      name: 'agreement',
+      // lazy-loaded
+      component: () => import('./views/Agreement.vue')
     }
   ]
 });

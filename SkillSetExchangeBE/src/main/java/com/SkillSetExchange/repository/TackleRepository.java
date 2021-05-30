@@ -61,5 +61,10 @@ public interface TackleRepository extends JpaRepository<TackleInfo, Long>{
     		  nativeQuery = true)
     List<TackleViewDAO> getTackleByTacklename(@Param("tackleName") String tackleName);
     
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update tackle_info set status = :#{#t.status} where transaction_info_id = :#{#t.transactionInfoId}" , 
+	  nativeQuery = true)
+    public int completeTackle(@Param("t")  TackleInfo tackleInfo);
    
 }

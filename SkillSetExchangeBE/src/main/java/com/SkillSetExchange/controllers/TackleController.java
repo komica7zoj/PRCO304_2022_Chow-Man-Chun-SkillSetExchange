@@ -1,5 +1,6 @@
 package com.SkillSetExchange.controllers;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +18,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.SkillSetExchange.BlockChainUtil;
 import com.SkillSetExchange.jwt.JwtUtils;
 import com.SkillSetExchange.models.SkillSetInfo;
 import com.SkillSetExchange.models.TackleInfo;
+import com.SkillSetExchange.models.UserMultichainContent;
+import com.SkillSetExchange.models.DAO.CreditUnitDAO;
 import com.SkillSetExchange.models.DAO.SearchConditionDAO;
 import com.SkillSetExchange.models.DAO.TackleInfoDAO;
 import com.SkillSetExchange.repository.MultichainRepository;
@@ -30,6 +34,8 @@ import com.SkillSetExchange.services.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import multichain.command.MultichainException;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -70,15 +76,41 @@ public class TackleController {
 		searchConditionDAO.userSkillSetDAO = searchSkillSetService.getSkillSetByName((String)infoId.get("username")).skillSetSearchResultDAO;
 	        return searchConditionDAO;
 	}
-
 	@PostMapping("/viewTackle")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public TackleInfoDAO viewTackleFrom(@RequestBody Map<String, Object> username) {
+	public TackleInfoDAO viewTackle(@RequestBody Map<String, Object> username) {
 
 		TackleInfoDAO	tackleInfoDAO =  new TackleInfoDAO() {{
 		tackleInfoByTacklename = tackleService.getTackleInfoByTackleName(username.get("username").toString());
 		tackleInfoByusername = tackleService.getTackleInfoByUsername(username.get("username").toString());}};
 	        return tackleInfoDAO;
 	}
+	@PostMapping("/tackleAgree")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+	public int agreeTackle(@RequestBody Map<String, Object> param) throws MultichainException {
+		
+//Map<String, Object> params =(Map<String, Object>) param.get("param");
+String id = param.get("id").toString();
+String username = param.get("username").toString();
+String tackleName = param.get("tackleName").toString();
+String transId ;
+String skillSetName ;
+int success = tackleService.tackleAgreement(param);
+
+
+		
+	        return success;
+	}
+	
+	@PostMapping("/objectTackle")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+	public String objectTackle(@RequestBody Map<String, Object> username) {
+
+		TackleInfoDAO	tackleInfoDAO =  new TackleInfoDAO() {{
+		tackleInfoByTacklename = tackleService.getTackleInfoByTackleName(username.get("username").toString());
+		tackleInfoByusername = tackleService.getTackleInfoByUsername(username.get("username").toString());}};
+	        return "";
+	}
+
 	
 }

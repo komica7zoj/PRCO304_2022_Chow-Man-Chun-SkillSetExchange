@@ -61,24 +61,25 @@ public class Initializing implements InitializingBean {
 
 			String testing = null;
 			List<TempDAO> tempdao ;
-			while (testing == null)
+			while (BlockChainUtil.chainPWMap == null)
 			{
 				if( (tempdao = tempRepository.getChainPW("")).get(0) != null)
 				{
 					testing = tempdao.get(0).geto_chainPW();
+		    	    StringBuffer inputBuffer = new StringBuffer();
+		    	    System.out.println("http://"+user+":"+testing+"@127.0.0.1:4766/");
+
+		            UserMultichainContent userMultichainContent = new UserMultichainContent();  
+		                	userMultichainContent.username=user;
+		                	userMultichainContent.connectionPort=4766;
+		                	userMultichainContent.nodeAddress="127.0.0.1";
+		                	multiChainService.createConnection(userMultichainContent,testing);
+		                	BlockChainUtil.chainPWMap=multiChainService.getChainPassword();
 				}
 				
 			}
 
-    	    StringBuffer inputBuffer = new StringBuffer();
-    	    System.out.println("http://"+user+":"+testing+"@127.0.0.1:4766/");
 
-            UserMultichainContent userMultichainContent = new UserMultichainContent();  
-                	userMultichainContent.username=user;
-                	userMultichainContent.connectionPort=4766;
-                	userMultichainContent.nodeAddress="127.0.0.1";
-                	multiChainService.createConnection(userMultichainContent,testing);
-                	BlockChainUtil.chainPWMap=multiChainService.getChainPassword();
 	}
 
 }

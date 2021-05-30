@@ -18,17 +18,30 @@ import com.SkillSetExchange.models.DAO.CertificateDAO;
 import com.SkillSetExchange.models.DAO.CreditUnitDAO;
 import com.SkillSetExchange.services.MultiChainService;
 
+import multichain.command.CommandElt;
+import multichain.command.CommandManager;
+import multichain.command.MultichainException;
 import wf.bitcoin.javabitcoindrpcclient.BitcoinJSONRPCClient;
 
 
 @Service
 public class MultiChainServiceImpl implements MultiChainService {
 	BitcoinJSONRPCClient bitcoinClient;
+	CommandManager commandManager;
 	@Override
-	public String sendasset(CreditUnitDAO creditUnitDAO, UserMultichainContent userMultichainContent,String metaData) {
+	public String sendasset(CreditUnitDAO creditUnitDAO, UserMultichainContent userMultichainContent,String metaData) throws MultichainException {
 		// TODO Auto-generated method stub
-		List<LinkedHashMap>  result = (List<LinkedHashMap>)bitcoinClient.query("sendwithmetadata ",userMultichainContent.multichainAddress, "'"+new JSONObject ().put(creditUnitDAO.assetName, creditUnitDAO.balances )+"'",metaData);
-return result.get(0).get(0).toString();
+		//String resultSring = bitcoinClient.sendToAddress(userMultichainContent.multichainAddress, creditUnitDAO.balances, metaData);
+		//String  resultA = (String)bitcoinClient.query("sendasset",userMultichainContent.multichainAddress, creditUnitDAO.assetName, creditUnitDAO.balances );
+		//JSONObject param = new JSONObject();
+		//param.put(creditUnitDAO.assetName, creditUnitDAO.balances);
+		Map<String, Object> assetParam = new HashMap();
+		Map<String, Object> metaDataParam = new HashMap();
+		assetParam.put(creditUnitDAO.assetName, creditUnitDAO.balances);
+		metaDataParam.put("text", metaData);
+		//List<LinkedHashMap>  result = (List<LinkedHashMap>)bitcoinClient.query("send",userMultichainContent.multichainAddress,param);
+		String message = (String) commandManager.invoke(CommandElt.SENDWITHDATA,userMultichainContent.multichainAddress, assetParam, metaDataParam);
+		return message;
 	}
 
 	@Override
@@ -57,6 +70,9 @@ return result.get(0).get(0).toString();
 		String host = userMultichainContent.nodeAddress;
 		int port = userMultichainContent.connectionPort;
 
+		CommandManager commandManager= new CommandManager(host, String.valueOf(port), user,password);
+this.commandManager = commandManager;
+		
 		try {
 		    URL url = new URL("http://" + user + ':' + password + "@" + host + ":" + port + "/");
 
@@ -72,6 +88,7 @@ return result.get(0).get(0).toString();
 	@Override
 	public Map<String, Object> getChainPassword() {
 		// TODO Auto-generated method stub
+		try {
 		Map<String, Object> userinfoMap = new HashMap<String,Object>();
 		List<LinkedHashMap>  result = (List<LinkedHashMap>)bitcoinClient.query("liststreamitems","userinfo");
 		result.forEach(userinfo ->{
@@ -79,6 +96,11 @@ return result.get(0).get(0).toString();
 		});
 			
 		return userinfoMap;
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
 	}
 
 }

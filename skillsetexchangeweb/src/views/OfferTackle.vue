@@ -22,6 +22,7 @@
 <td> {{row.tackleName }}</td>
 <td> {{row.transactionInfoId }}</td>
 <td> {{row.username }}</td>
+<td><router-link :to="{ name: 'agreement', params: { tackleInfo: row }}">accept the tacke</router-link></td>
       </template>
       
       <template v-slot:no-data>
@@ -52,6 +53,7 @@
 <td> {{row.tackleName }}</td>
 <td> {{row.transactionInfoId }}</td>
 <td> {{row.username }}</td>
+
       </template>
       
       <template v-slot:no-data>
@@ -92,6 +94,7 @@ export default {
 {"label":"TackleName","field":"tackleName" ,"sortable":true,"type":"String"},
 {"label":"transactionInfoId","field":"transactionInfoId" ,"sortable":true,"type":"Number"},
 {"label":"username","field":"username" ,"sortable":true,"type":"String"},
+{"label":"Accept tackle","field":"accept" ,"sortable":false,"type":"String"},
 ],
       items: [],  
       sort1:{

@@ -17,7 +17,8 @@
     class="mb-2"
   > 
     <b-card-text>
-      {{`${data.skillSetDescript.slice(0,100)}`}}
+	<label> Skill set description: </label>
+    <label>   {{`${data.skillSetDescript.slice(0,100)}`}} </label>
     </b-card-text>
   <section>
   <div>
@@ -49,10 +50,10 @@
     </label>
 </div>
   </section>
+  <label> Tag: </label>
   <input type="text" v-model="skillSetSearchResultDAO.tag"/>
     <b-button @click.prevent="issueTackleClick" variant="primary" :disabled="card == false && values.length == 0">Make Tackle</b-button>
-	{{values.length}}
-	{{card}}
+
   </b-card>
 </div></div>
 </div>
